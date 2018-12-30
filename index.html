@@ -16,34 +16,50 @@
 		<h2>Data Visualization</h2>
       <!-- survivors by class bar chart -->
     <h2>Survivors by Passenger Class (Bar)</h2>
+      <div id="chartContainer">
+        <script type="text/javascript">
 
-    <div id="chartContainer">
-      <script type="text/javascript">
+          var svg = dimple.newSvg('#chartContainer', 600, 400)
+          d3.csv('titanic1.csv', function(data) {
+            
+            // create a chart by combing svg and data
+            var ChartInstance = new dimple.chart(svg, data);
 
-        var svg = dimple.newSvg('#chartContainer', 600, 400)
-        d3.csv('titanic1.csv', function(data) {
-          
-          // create a chart by combing svg and data
-          var ChartInstance = new dimple.chart(svg, data);
+            // set bounds (x axis)
+            ChartInstance.setBounds(60, 30, 510, 305)
+            var x = ChartInstance.addCategoryAxis('x', 'Passenger Class');
+            x.addOrderRule('Type');
 
-          // set bounds (x axis)
-          ChartInstance.setBounds(60, 30, 510, 305)
-          var x = ChartInstance.addCategoryAxis('x', 'Passenger Class');
-          x.addOrderRule('Type');
+            var y = ChartInstance.addPctAxis('y', 'Count');
+            // status
+            var s = ChartInstance.addSeries('Status', dimple.plot.bar);
 
-          var y = ChartInstance.addPctAxis('y', 'Count');
-          // status
-          var s = ChartInstance.addSeries('Status', dimple.plot.bar);
+            // add legend
+            ChartInstance.addLegend(60,10,510,20, 'right');
 
-          // add legend
-          ChartInstance.addLegend(60,10,510,20, 'right');
+            // draw
+            ChartInstance.draw(1000);
+          });
+        </script>
+      </div>
 
-          // draw
-          ChartInstance.draw(1000);
-        });
-      </script>
-    </div>
       <!-- passengers share of each class pie chart -->
+        <div id="PieChartContainer">
+          <h2>Passenger share by Class 1, Class 2, Class 3</h2>
+
+          <script type="text/javascript">
+            var svg2 = dimple.newSvg('#PieChartContainer', 590, 400)
+            d3.csv('titanic_train.csv', function(data) {
+              var ChartInstance = new dimple.chart(svg2, data);
+              ChartInstance.setBounds(20, 20, 460, 360);
+              ChartInstance.addMeasureAxis('p', 'Passenger Class');
+              ChartInstance.addSeries('Passenger Class', dimple.plot.pie);
+              ChartInstance.addLegend(500, 20, 90, 300, 'left');
+
+              ChartInstance.draw(1000);
+            })
+          </script>
+        </div>
       <!-- survivors by gender pie chart -->
       <!-- survivors by age bar chart -->
       <!-- survivors by where they embarked bar chart -->
